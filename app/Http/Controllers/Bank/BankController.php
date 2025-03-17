@@ -18,27 +18,27 @@ class BankController extends Controller
      */
     public function __construct(BankService $bankService)
     {
-        // $this->middleware('auth'); // iki gawe lek butuh wajib login sek
         $this->bankService = $bankService;
     }
 
     /**
-     * Gawe get data all bank anjoyyyyyy
+     * Show the bank account checking form with list of available banks
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        $paymentMethods = $this->bankService->getAllPaymentMethods();
+        $banks = $this->bankService->getAllBanks();
+        $ewallets = $this->bankService->getEwallets();
         
         return view('banks.index', [
-            'banks' => $paymentMethods['banks'],
-            'ewallets' => $paymentMethods['ewallets']
+            'banks' => $banks,
+            'ewallets' => $ewallets
         ]);
     }
 
     /**
-     * Prosess check akun
+     * Process account checking
      *
      * @param Request $request
      * @return \Illuminate\View\View
@@ -47,7 +47,8 @@ class BankController extends Controller
     {
         $validated = $request->validate([
             'account_number' => 'required|string',
-            'account_bank' => 'required|string'
+            'account_bank' => 'required|string',
+            'type' => 'sometimes|string|in:bank,ewallet'
         ]);
         
         $result = $this->bankService->checkAccount(
@@ -55,11 +56,12 @@ class BankController extends Controller
             $validated['account_bank']
         );
         
-        $paymentMethods = $this->bankService->getAllPaymentMethods();
+        $banks = $this->bankService->getAllBanks();
+        $ewallets = $this->bankService->getEwallets();
         
         return view('banks.index', [
-            'banks' => $paymentMethods['banks'],
-            'ewallets' => $paymentMethods['ewallets'],
+            'banks' => $banks,
+            'ewallets' => $ewallets,
             'result' => $result,
             'formData' => $validated
         ]);
