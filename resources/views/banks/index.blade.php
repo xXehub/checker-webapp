@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="mb-0">Bank Account Checker</h4>
+                    <h4 class="mb-0">Bank & E-Wallet Account Checker</h4>
                 </div>
 
                 <div class="card-body">
@@ -16,61 +16,116 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('check.account') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="account_number" class="form-label">Nomor Rekening</label>
-                            <input type="text" class="form-control @error('account_number') is-invalid @enderror" 
-                                id="account_number" name="account_number" 
-                                value="{{ $formData['account_number'] ?? old('account_number') }}" required>
-                            
-                            @error('account_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                    <!-- Tabs Navigation -->
+                    <ul class="nav nav-tabs mb-4" id="accountTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank-content" 
+                                type="button" role="tab" aria-controls="bank-content" aria-selected="true">
+                                Bank
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ewallet-tab" data-bs-toggle="tab" data-bs-target="#ewallet-content" 
+                                type="button" role="tab" aria-controls="ewallet-content" aria-selected="false">
+                                E-Wallet
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tabs Content -->
+                    <div class="tab-content" id="accountTabsContent">
+                        <!-- Bank Tab -->
+                        <div class="tab-pane fade show active" id="bank-content" role="tabpanel" aria-labelledby="bank-tab">
+                            <form method="POST" action="{{ route('check.account') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="account_number_bank" class="form-label">Nomor Rekening Bank</label>
+                                    <input type="text" class="form-control @error('account_number') is-invalid @enderror" 
+                                        id="account_number_bank" name="account_number" 
+                                        value="{{ $formData['account_number'] ?? old('account_number') }}" required>
+                                    
+                                    @error('account_number')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="account_bank" class="form-label">Pilih Bank</label>
+                                    <select class="form-select @error('account_bank') is-invalid @enderror" 
+                                        id="account_bank" name="account_bank" required>
+                                        <option value="">-- Pilih Bank --</option>
+                                        
+                                        @if(count($banks) > 0)
+                                            @foreach($banks as $bank)
+                                                <option value="{{ $bank['value'] }}" 
+                                                    {{ isset($formData['account_bank']) && $formData['account_bank'] == $bank['value'] ? 'selected' : '' }}>
+                                                    {{ $bank['label'] }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    
+                                    @error('account_bank')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Cek Rekening Bank</button>
+                                </div>
+                            </form>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="account_bank" class="form-label">Bank / E-Wallet</label>
-                            <select class="form-select @error('account_bank') is-invalid @enderror" 
-                                id="account_bank" name="account_bank" required>
-                                <option value="">-- Pilih Bank / E-Wallet --</option>
-                                
-                                @if(count($banks) > 0)
-                                    <optgroup label="Bank">
-                                        @foreach($banks as $bank)
-                                            <option value="{{ $bank['value'] }}" 
-                                                {{ isset($formData['account_bank']) && $formData['account_bank'] == $bank['value'] ? 'selected' : '' }}>
-                                                {{ $bank['label'] }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endif
-                                
-                                @if(count($ewallets) > 0)
-                                    <optgroup label="E-Wallet">
-                                        @foreach($ewallets as $ewallet)
-                                            <option value="{{ $ewallet['value'] }}" 
-                                                {{ isset($formData['account_bank']) && $formData['account_bank'] == $ewallet['value'] ? 'selected' : '' }}>
-                                                {{ $ewallet['label'] }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endif
-                            </select>
-                            
-                            @error('account_bank')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
+                        <!-- E-Wallet Tab -->
+                        <div class="tab-pane fade" id="ewallet-content" role="tabpanel" aria-labelledby="ewallet-tab">
+                            <form method="POST" action="{{ route('check.account') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="account_number_ewallet" class="form-label">Nomor E-Wallet</label>
+                                    <input type="text" class="form-control @error('account_number') is-invalid @enderror" 
+                                        id="account_number_ewallet" name="account_number" 
+                                        value="{{ $formData['account_number'] ?? old('account_number') }}" required>
+                                    
+                                    @error('account_number')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Cek Pemilik Rekening</button>
+                                <div class="mb-3">
+                                    <label for="account_ewallet" class="form-label">Pilih E-Wallet</label>
+                                    <select class="form-select @error('account_bank') is-invalid @enderror" 
+                                        id="account_ewallet" name="account_bank" required>
+                                        <option value="">-- Pilih E-Wallet --</option>
+                                        
+                                        @if(count($ewallets) > 0)
+                                            @foreach($ewallets as $ewallet)
+                                                <option value="{{ $ewallet['value'] }}" 
+                                                    {{ isset($formData['account_bank']) && $formData['account_bank'] == $ewallet['value'] ? 'selected' : '' }}>
+                                                    {{ $ewallet['label'] }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    
+                                    @error('account_bank')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Cek E-Wallet</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
 
                     @if(isset($result))
                         <div class="mt-4">
@@ -83,7 +138,7 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
-                                                <th style="width: 40%">Nomor Rekening</th>
+                                                <th style="width: 40%">Nomor Rekening/E-Wallet</th>
                                                 <td>{{ $result['data']['account_number'] }}</td>
                                             </tr>
                                             <tr>
@@ -92,7 +147,29 @@
                                             </tr>
                                             <tr>
                                                 <th>Bank/E-Wallet</th>
-                                                <td>{{ $result['data']['account_bank'] }}</td>
+                                                <td>
+                                                    @php
+                                                        $accountType = $result['data']['account_bank'];
+                                                        $isEwallet = false;
+                                                        
+                                                        foreach($ewallets as $ewallet) {
+                                                            if($ewallet['value'] == $accountType) {
+                                                                echo $ewallet['label'] . ' (E-Wallet)';
+                                                                $isEwallet = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        
+                                                        if(!$isEwallet) {
+                                                            foreach($banks as $bank) {
+                                                                if($bank['value'] == $accountType) {
+                                                                    echo $bank['label'] . ' (Bank)';
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                    @endphp
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -109,36 +186,41 @@
 
             <div class="card mt-4">
                 <div class="card-header">
-                    <h4 class="mb-0">Daftar Bank yang Didukung</h4>
+                    <h4 class="mb-0">Bantuan Penggunaan</h4>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Bank</h5>
-                            <ul class="list-group">
-                                @foreach($banks as $bank)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $bank['label'] }}
-                                        <span class="badge bg-primary rounded-pill">{{ $bank['value'] }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>E-Wallet</h5>
-                            <ul class="list-group">
-                                @foreach($ewallets as $ewallet)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $ewallet['label'] }}
-                                        <span class="badge bg-primary rounded-pill">{{ $ewallet['value'] }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+                    <p>Aplikasi ini berfungsi untuk memeriksa nomor rekening/e-wallet. Caranya:</p>
+                    <ol>
+                        <li>Pilih tab <strong>Bank</strong> untuk memeriksa rekening bank, atau tab <strong>E-Wallet</strong> untuk memeriksa nomor e-wallet</li>
+                        <li>Masukkan nomor rekening/e-wallet yang ingin diperiksa</li>
+                        <li>Pilih bank/e-wallet yang sesuai</li>
+                        <li>Klik tombol "Cek" dan hasil pengecekan akan muncul di bawah form</li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Script to preserve active tab after form submission
+    document.addEventListener('DOMContentLoaded', function() {
+        // If form was submitted from e-wallet tab, switch to it
+        @if(isset($formData['account_bank']))
+            @php
+                $isEwallet = false;
+                foreach($ewallets as $ewallet) {
+                    if($ewallet['value'] == $formData['account_bank']) {
+                        $isEwallet = true;
+                        break;
+                    }
+                }
+            @endphp
+            
+            @if($isEwallet)
+                document.getElementById('ewallet-tab').click();
+            @endif
+        @endif
+    });
+</script>
 @endsection
