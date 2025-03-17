@@ -8,16 +8,18 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- fontawesome --}}
-    <script src="https://kit.fontawesome.com/a45f001349.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/a45f001349.js" crossorigin="anonymous"></script> --}}
     {{-- css --}}
-    <script src="https://kit.fontawesome.com/a45f001349.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/a45f001349.js" crossorigin="anonymous"></script> --}}
 
     {{-- css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/tabler.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-flags.min.css?1667333929') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-payments.min.css?1667333929') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css?1667333929') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css?1667333929') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css?1667333929') }}">\
+
+
 
     {{-- <link rel="stylesheet" href="{{ asset('assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/extra-libs/datatables.net-bs4/css/responsive.dataTables.min.css') }}">
@@ -35,6 +37,10 @@
         }
     </style>
 
+<!-- Make sure jQuery is loaded first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Then include DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     {{-- sssss --}}
     {{-- <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
