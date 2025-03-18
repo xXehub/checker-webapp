@@ -62,6 +62,7 @@
         <main class="py-4">
             <x-breadcumb />
             {{ $slot }}
+            <x-footer />
         </main>
     </div>
 </body>
