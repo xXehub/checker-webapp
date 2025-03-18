@@ -37,10 +37,10 @@
         }
     </style>
 
-<!-- Make sure jQuery is loaded first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Then include DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- Make sure jQuery is loaded first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Then include DataTables -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     {{-- sssss --}}
     {{-- <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -52,17 +52,23 @@
 </head>
 
 <body>
-    {{-- @include('sweetalert::alert') --}}
-
     <script src="{{ asset('assets/js/demo-theme.min.js?1667333929') }}"></script>
     <div id="app">
-        {{-- gawe nyeluk component navbar --}}
-        <x-navbar />
 
+        {{-- kondisional render nya mas --}}
+        @unless (Request::is('login', 'register', 'password/reset', 'password/email'))
+            <x-navbar />
+        @endunless
         <main class="py-4">
-            <x-breadcumb />
+            {{-- kondisional render nya mas --}}
+            @unless (Request::is('login', 'register', 'password/reset', 'password/email'))
+                <x-breadcumb />
+            @endunless
             {{ $slot }}
-            <x-footer />
+            {{-- kondisional render nya mas --}}
+            @unless (Request::is('login', 'register', 'password/reset', 'password/email'))
+                <x-footer />
+            @endunless
         </main>
     </div>
 </body>
