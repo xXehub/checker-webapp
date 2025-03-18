@@ -4,7 +4,7 @@
         <label for="account_number_ewallet" class="form-label required">Nomor E-Wallet</label>
         <input type="text" class="form-control @error('account_number') is-invalid @enderror" 
             id="account_number_ewallet" name="account_number" 
-            value="{{ $formData['account_number'] ?? old('account_number') }}" required
+            value="{{ isset($formData['type']) && $formData['type'] == 'ewallet' ? ($formData['account_number'] ?? old('account_number')) : '' }}" 
             placeholder="Masukkan nomor e-wallet">
         
         @error('account_number')
@@ -15,14 +15,14 @@
     <div class="mb-3">
         <label for="select-ewallet" class="form-label required">Pilih E-Wallet</label>
         <select id="select-ewallet" class="form-select @error('account_bank') is-invalid @enderror" 
-            name="account_bank" required>
+            name="account_bank" >
             <option value="">-- Pilih E-Wallet --</option>
             
             @if(count($ewallets) > 0)
                 @foreach($ewallets as $ewallet)
                     <option value="{{ $ewallet['value'] }}" 
                         data-custom-properties="&lt;span class=&quot;badge bg-success-lt&quot;&gt;{{ $ewallet['value'] }}&lt;/span&gt;"
-                        {{ isset($formData['account_bank']) && $formData['account_bank'] == $ewallet['value'] ? 'selected' : '' }}>
+                        {{ isset($formData['type']) && $formData['type'] == 'ewallet' && isset($formData['account_bank']) && $formData['account_bank'] == $ewallet['value'] ? 'selected' : '' }}>
                         {{ $ewallet['label'] }}
                     </option>
                 @endforeach
@@ -58,9 +58,9 @@
             </h2>
             <div id="ewallet-result-collapse" class="accordion-collapse collapse" aria-labelledby="ewallet-result-heading">
                 <div class="accordion-body p-0">
-                    @if($result['success'])
-                        <table class="table table-vcenter card-table m-0">
-                            <tbody>
+                    <table class="table table-vcenter card-table m-0">
+                        <tbody>
+                            @if($result['success'])
                                 <tr>
                                     <td class="text-muted" style="width: 40%">Nomor E-Wallet</td>
                                     <td class="fw-bold text-wrap">{{ $result['data']['account_number'] }}</td>
@@ -86,13 +86,22 @@
                                         @endphp
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    @else
-                        <div class="alert alert-danger m-3">
-                            {{ $result['message'] }}
-                        </div>
-                    @endif
+                            @else
+                                <tr>
+                                    <td class="text-muted" style="width: 40%">Status</td>
+                                    <td class="text-danger fw-bold">Gagal</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Pesan</td>
+                                    <td class="fw-bold text-wrap">{{ $result['message'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Saran</td>
+                                    <td class="text-wrap">Periksa kembali nomor e-wallet dan provider yang dipilih</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

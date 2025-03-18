@@ -3,7 +3,7 @@
     <div class="mb-3">
         <label for="account_number_bank" class="form-label required">Nomor Rekening Bank</label>
         <input type="text" class="form-control @error('account_number') is-invalid @enderror" id="account_number_bank"
-            name="account_number" value="{{ $formData['account_number'] ?? old('account_number') }}"
+            name="account_number" value="{{ isset($formData['type']) && $formData['type'] == 'bank' ? ($formData['account_number'] ?? old('account_number')) : '' }}"
             placeholder="Masukkan nomor rekening">
 
         @error('account_number')
@@ -20,7 +20,7 @@
                 @foreach ($banks as $bank)
                     <option value="{{ $bank['value'] }}"
                         data-custom-properties="&lt;span class=&quot;badge bg-primary-lt&quot;&gt;{{ $bank['value'] }}&lt;/span&gt;"
-                        {{ isset($formData['account_bank']) && $formData['account_bank'] == $bank['value'] ? 'selected' : '' }}>
+                        {{ isset($formData['type']) && $formData['type'] == 'bank' && isset($formData['account_bank']) && $formData['account_bank'] == $bank['value'] ? 'selected' : '' }}>
                         {{ $bank['label'] }}
                     </option>
                 @endforeach
@@ -33,7 +33,6 @@
     </div>
 
     <!-- Hasil Pengecekan dengan Accordion -->
-    <!-- Accordion untuk Bank -->
     @if (isset($result) && isset($formData['type']) && $formData['type'] == 'bank')
         <div class="accordion mb-3" id="bank-result-accordion">
             <div class="accordion-item">
@@ -69,9 +68,9 @@
                 <div id="bank-result-collapse" class="accordion-collapse collapse"
                     aria-labelledby="bank-result-heading">
                     <div class="accordion-body p-0">
-                        @if ($result['success'])
-                            <table class="table table-vcenter card-table m-0">
-                                <tbody>
+                        <table class="table table-vcenter card-table m-0">
+                            <tbody>
+                                @if ($result['success'])
                                     <tr>
                                         <td class="text-muted" style="width: 40%">Nomor Rekening</td>
                                         <td class="fw-bold text-wrap">{{ $result['data']['account_number'] }}</td>
@@ -101,13 +100,22 @@
                                             @endphp
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="alert alert-danger m-3">
-                                {{ $result['message'] }}
-                            </div>
-                        @endif
+                                @else
+                                    <tr>
+                                        <td class="text-muted" style="width: 40%">Status</td>
+                                        <td class="text-danger fw-bold">Gagal</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Pesan</td>
+                                        <td class="fw-bold text-wrap">{{ $result['message'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted">Saran</td>
+                                        <td class="text-wrap">Periksa kembali nomor rekening dan bank yang dipilih</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
