@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-flags.min.css?1667333929') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-payments.min.css?1667333929') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/tabler-vendors.min.css?1667333929') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css?1667333929') }}">\
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.min.css?1667333929') }}">
 
 
 
