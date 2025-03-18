@@ -1,5 +1,5 @@
 <x-app>
-    <div class="page-header d-print-none">
+    {{-- <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="page-body">
         <div class="container-xl">
@@ -50,7 +50,15 @@
                                 <div class="datagrid">
                                     <div class="datagrid-item">
                                         <div class="datagrid-title">Nomor Resi</div>
-                                        <div class="datagrid-content">{{ $trackingData['result']['resi'] }}</div>
+                                        <div class="datagrid-content">
+                                            <div class="input-icon">
+                                                <input type="text" value="{{ $trackingData['result']['resi'] }}" class="form-control" placeholder="Nomor Resi" readonly>
+                                                <span class="input-icon-addon">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/files -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 3v4a1 1 0 0 0 1 1h4" /><path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z" /><path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2" /></svg>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="datagrid-item">
                                         <div class="datagrid-title">Kurir</div>
@@ -78,43 +86,61 @@
                                             {{ $trackingData['result']['destination']['address'] }}</div>
                                     </div>
                                 </div>
+
                                 <h3 class="mt-4 mb-3">Riwayat Pengiriman</h3>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <ul class="steps steps-vertical">
-                                            @php
-                                                // Urutkan array dari yang terbaru (indeks 0) ke yang terlama
-                                                // Data dari API biasanya sudah terurut, tapi kita pastikan saja
-                                                // $sortedHistory = collect($trackingData['result']['history'])->sortByDesc('time')->values()->all();
-                                                
-                                                // Gunakan data asli karena sudah terurut dari terbaru ke terlama (indeks 0 adalah terbaru)
-                                                $sortedHistory = $trackingData['result']['history'];
-                                                
-                                                // Tentukan status yang menandakan paket telah sampai
-                                                $deliveredKeywords = ['delivered', 'diterima', 'sampai di alamat penerima'];
-                                                
-                                                // Cari indeks status terakhir (terbaru) yang menandakan paket telah sampai
-                                                $activeIndex = 0; // Default ke status terbaru
-                                                foreach ($sortedHistory as $index => $item) {
-                                                    $note = strtolower($item['note']);
-                                                    foreach ($deliveredKeywords as $keyword) {
-                                                        if (strpos($note, $keyword) !== false) {
-                                                            $activeIndex = $index;
-                                                            break 2;
-                                                        }
-                                                    }
-                                                }
-                                            @endphp
-                                            
-                                            @foreach($sortedHistory as $index => $history)
-                                            <li class="step-item {{ $index === $activeIndex ? 'active' : '' }}">
+                                {{-- <ul class="steps steps-vertical steps-green steps-counter my-4">
+                                    @php
+                                        // ambil history array
+                                        $sortedHistory = $trackingData['result']['history'];
+
+                                        // sory history berdasarkan time
+                                        usort($sortedHistory, function ($a, $b) {
+                                            return strtotime($a['time']) - strtotime($b['time']);
+                                        });
+
+                                        // ambil last index nya mas
+                                        $activeIndex = count($sortedHistory) - 1;
+                                    @endphp
+
+                                    @foreach ($sortedHistory as $index => $history)
+                                        <li class="step-item {{ $index === $activeIndex ? 'active' : '' }}">
+                                            <div class="step-content">
                                                 <div class="h4 m-0">{{ $history['time'] }}</div>
                                                 <div class="text-muted">{{ $history['note'] }}</div>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul> --}}
+                                <ul class="steps steps-vertical steps-green steps-counter my-4">
+                                    @php
+                                        $sortedHistory = $trackingData['result']['history'];
+                                        usort($sortedHistory, function ($a, $b) {
+                                            return strtotime($a['time']) - strtotime($b['time']);
+                                        });
+
+                                        // nhehapus note []
+                                        foreach ($sortedHistory as $key => $item) {
+                                            // Use regex to replace any text within square brackets (including the brackets) with empty string
+                                            $sortedHistory[$key]['note'] = preg_replace(
+                                                '/\s*\[[^\]]*\]\s*/',
+                                                ' ',
+                                                $item['note'],
+                                            );
+                                            $sortedHistory[$key]['note'] = trim($sortedHistory[$key]['note']);
+                                        }
+
+                                        $activeIndex = count($sortedHistory) - 1;
+                                    @endphp
+
+                                    @foreach ($sortedHistory as $index => $history)
+                                        <li class="step-item {{ $index === $activeIndex ? 'active' : '' }}">
+                                            <div class="step-content">
+                                                <div class="h4 m-0">{{ $history['time'] }}</div>
+                                                <div class="text-muted">{{ $history['note'] }}</div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
                     </div>
