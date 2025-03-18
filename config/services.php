@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'lolhuman' => [
+        'key' => env('LOLHUMAN_API_KEY'),
+        'url' => 'https://api.lolhuman.xyz/api/',
+    ],
 
 ];
