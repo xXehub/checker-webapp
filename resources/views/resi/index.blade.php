@@ -1,16 +1,6 @@
 <x-app>
-    {{-- <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        Lacak Pengiriman
-                    </h2>
-                    <div class="text-muted mt-1">Cek status pengiriman paket Anda</div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
+   
 
     <div class="page-body">
         <div class="container-xl">

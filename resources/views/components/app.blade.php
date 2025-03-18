@@ -58,7 +58,9 @@
     <div id="app">
         {{-- gawe nyeluk component navbar --}}
         <x-navbar />
+
         <main class="py-4">
+            <x-breadcumb />
             {{ $slot }}
         </main>
     </div>
