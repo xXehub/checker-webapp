@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiDokumentasiController;
 use App\Http\Controllers\Resi\KurirKontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Bank\BankController;
@@ -33,4 +34,18 @@ Route::prefix('banks')->group(function () {
 Route::prefix('resi')->group(function () {
     Route::get('/', [KurirKontroller::class, 'index'])->name('kurir.index');
     Route::post('/track', [KurirKontroller::class, 'trackPackage'])->name('kurir.track');
+});
+
+Route::prefix('dokumentasi')->group(function () {
+    // Halaman utama dokumentasi API
+    Route::get('/api', [ApiDokumentasiController::class, 'index'])
+        ->name('dokumentasi.api.index');
+
+    // Halaman detail layanan API
+    Route::get('/api/{serviceKey}', [ApiDokumentasiController::class, 'showServiceDetail'])
+        ->name('dokumentasi.api.service.detail');
+
+    // Ambil detail layanan API secara dinamis (untuk AJAX)
+    Route::get('/api/layanan/{service}', [ApiDokumentasiController::class, 'getServiceDetails'])
+        ->name('dokumentasi.api.service.get');
 });

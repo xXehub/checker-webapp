@@ -211,32 +211,34 @@
 
             <!-- User dropdown if authenticated -->
             @auth
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-                    <span class="avatar avatar-sm" style="{{ Auth::user()->avatar ? 'background-image: url(' . asset(Auth::user()->avatar) . ')' : 'background-color: var(--tblr-primary); color: white; display: flex; align-items: center; justify-content: center;' }}">
-                        @if (!Auth::user()->avatar)
-                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                        @endif
-                    </span>
-                    <div class="d-none d-xl-block ps-2">
-                        <div>{{ Auth::user()->name }}</div>
-                        <div class="mt-1 small text-muted">{{ Auth::user()->email }}</div>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="#" class="dropdown-item">Profil</a>
-                    <a href="#" class="dropdown-item">Pengaturan</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="{{ route('logout') }}" class="dropdown-item"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                        aria-label="Open user menu">
+                        <span class="avatar avatar-sm"
+                            style="{{ Auth::user()->avatar ? 'background-image: url(' . asset(Auth::user()->avatar) . ')' : 'background-color: var(--tblr-primary); color: white; display: flex; align-items: center; justify-content: center;' }}">
+                            @if (!Auth::user()->avatar)
+                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                            @endif
+                        </span>
+                        <div class="d-none d-xl-block ps-2">
+                            <div>{{ Auth::user()->name }}</div>
+                            <div class="mt-1 small text-muted">{{ Auth::user()->email }}</div>
+                        </div>
                     </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <a href="#" class="dropdown-item">Profil</a>
+                        <a href="#" class="dropdown-item">Pengaturan</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{{ route('logout') }}" class="dropdown-item"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
                 </div>
-            </div>
-        @endauth
+            @endauth
         </div>
 
         <!-- Centered navbar items with icons -->
@@ -247,14 +249,7 @@
                         class="nav-item {{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('dashboard') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-                                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                                </svg>
+                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="currentColor"  class="icon icon-tabler icons-tabler-filled icon-tabler-home"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.707 2.293l9 9c.63 .63 .184 1.707 -.707 1.707h-1v6a3 3 0 0 1 -3 3h-1v-7a3 3 0 0 0 -2.824 -2.995l-.176 -.005h-2a3 3 0 0 0 -3 3v7h-1a3 3 0 0 1 -3 -3v-6h-1c-.89 0 -1.337 -1.077 -.707 -1.707l9 -9a1 1 0 0 1 1.414 0m.293 11.707a1 1 0 0 1 1 1v7h-4v-7a1 1 0 0 1 .883 -.993l.117 -.007z" /></svg>
                             </span>
                             <span class="nav-link-title">
                                 Dashboard
@@ -300,6 +295,16 @@
                             </span>
                             <span class="nav-link-title">
                                 Cek Resi
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ Route::is('dokumentasi.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('dokumentasi.api.index') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-book-upload"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 20h-8a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12v5" /><path d="M11 16h-5a2 2 0 0 0 -2 2" /><path d="M15 16l3 -3l3 3" /><path d="M18 13v9" /></svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Dokumentasi
                             </span>
                         </a>
                     </li>

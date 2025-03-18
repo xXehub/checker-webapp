@@ -29,7 +29,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-10">
-                                        <h3 class="h1">Selamat Datang di Digital Checker</h3>
+                                        <h3 class="h1">Selamat Datang di <b> SihubChecker </b></h3>
                                         <div class="markdown text-muted">
                                             Verifikasi rekening bank, e-wallet, dan lacak pengiriman paket dengan cepat
                                             dan mudah. <b> by sihub </b>
